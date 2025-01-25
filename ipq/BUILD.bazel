@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "ipq",
+    srcs = ["ipq.go"],
+    importpath = "github.com/tyler-french/go-indexed-priority-queue/ipq",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "ipq_test",
+    srcs = ["ipq_test.go"],
+    deps = [
+        ":ipq",
+        "@com_github_stretchr_testify//assert",
+    ],
+)

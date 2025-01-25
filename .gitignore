@@ -1,0 +1,5 @@
+bazel-bin 
+bazel-go-indexed-priority-queue 
+bazel-out 
+bazel-testlogs
+MODULE.bazel.lock

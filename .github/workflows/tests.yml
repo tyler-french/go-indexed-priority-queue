@@ -22,7 +22,7 @@ jobs:
       - name: Build and Test
         run: bazelisk test //...
       - name: Coverage
-        run: go test -coverprofile=coverage.txt
+        run: bazelisk coverage //... && cp $(bazelisk info bazel-testlogs)/ipq/ipq_test/coverage.dat ./coverage.dat
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

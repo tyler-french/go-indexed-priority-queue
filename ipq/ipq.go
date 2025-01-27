@@ -204,23 +204,44 @@ func (pq *IndexedPriorityQueue[T]) up(i int) {
 	}
 }
 
+// down restores the heap property by "sifting down" the element at index i.
+// It compares the element at i with its children, and if one of the children
+// has a higher priority (smaller value for a min-heap), it swaps the elements
+// and continues this process recursively down the heap until the heap property is restored.
+// 
+// This function is typically used after removing or modifying an element at the root of the heap,
+// to ensure the heap property is maintained throughout the structure.
+//
+// Complexity: O(log n), where n is the number of elements in the heap.
 func (pq *IndexedPriorityQueue[T]) down(i int) {
-	n := len(pq.heap)
-	for {
-		l, r, smallest := 2*i+1, 2*i+2, i
-		if l < n && pq.comp(pq.heap[l].value, pq.heap[smallest].value) {
-			smallest = l
-		}
-		if r < n && pq.comp(pq.heap[r].value, pq.heap[smallest].value) {
-			smallest = r
-		}
-		if smallest == i {
-			break
-		}
-		pq.swap(i, smallest)
-		i = smallest
-	}
+    n := len(pq.heap) // Get the total number of elements in the heap
+    for {
+        // Calculate indices for the left (l) and right (r) children of the current node (i)
+        l, r, smallest := 2*i+1, 2*i+2, i
+
+        // Check if the left child exists and has a higher priority (smaller value) than the current node
+        if l < n && pq.comp(pq.heap[l].value, pq.heap[smallest].value) {
+            smallest = l // Update smallest if left child is higher priority
+        }
+
+        // Check if the right child exists and has a higher priority than the smallest value so far
+        if r < n && pq.comp(pq.heap[r].value, pq.heap[smallest].value) {
+            smallest = r // Update smallest if right child is higher priority
+        }
+
+        // If the current node is the smallest, the heap property is satisfied, so exit the loop
+        if smallest == i {
+            break
+        }
+
+        // Swap the current node with the smallest child
+        pq.swap(i, smallest)
+
+        // Move to the next level in the heap (i.e., the index of the swapped child)
+        i = smallest
+    }
 }
+
 
 func (pq *IndexedPriorityQueue[T]) swap(i, j int) {
 	pq.keys[pq.heap[i].index], pq.keys[pq.heap[j].index] = j, i
